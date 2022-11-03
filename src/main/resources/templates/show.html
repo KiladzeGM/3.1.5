@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html" xmlns:th="http://thymeleaf.org">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Show</title>
+</head>
+<body>
+<div>
+    <table border="1">
+        <thead>
+        <tr>
+            <th>Username</th>
+            <th>Edit</th>
+            <th>Delete</th>
+        </tr>
+        </thead>
+        >
+        <tbody>
+        <tr th:each="user : ${show}">
+            <td th:text="${user.getUsername()}"></td>
+            <td>
+                <a th:href="@{/admin/{id}/edit(id = ${user.getId()})}">Edit</a>
+            </td>
+            <td>
+                <form th:method="DELETE" th:action="@{/admin/{id}(id = ${user.getId()})}">
+                    <input type="submit" value="Delete"/>
+                </form>
+            </td>
+            <td>
+                <form th:method="GET" th:action="@{/admin/user/{id}(id = ${user.getId()})}">
+                    <input type="submit" value="Information of User"/>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <table>
+        <form th:method="GET" th:action="@{/admin/new}">
+            <input type="submit" value="Create new User"/>
+        </form>
+
+        <form th:method="GET" th:action="@{/logout}">
+            <input type="submit" value="Logout"/>
+        </form>
+    </table>
+</div>
+</body>
+</html>
