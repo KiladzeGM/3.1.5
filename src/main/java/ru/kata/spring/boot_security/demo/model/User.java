@@ -5,9 +5,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Table(name = "user")
@@ -18,10 +16,16 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "name")
-    private String name;
+    @Column(name = "FirstName")
+    private String firstName;
 
-    @Column(name = "surname")
+    @Column(name = "LastName")
+    private String lastName;
+
+    @Column(name = "Age")
+    private int age;
+
+    @Column(name = "Email")
     private String username;
 
     @Column(name = "password")
@@ -36,9 +40,11 @@ public class User implements UserDetails {
     public User() {
     }
 
-    public User(int id, String name, String username) {
+    public User(int id, String firstName, String lastName, int age, String username) {
         this.id = id;
-        this.name = name;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.age = age;
         this.username = username;
     }
 
@@ -93,20 +99,61 @@ public class User implements UserDetails {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
-    public Set<Role> getRoles() {
-        return roles;
+    public String getRoles() {
+        String rol = "";
+
+        for (Role r : roles) {
+            rol += " " + r.getName();
+        }
+
+        return rol.replaceAll("ROLE_", "");
     }
 
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
+
+    public List<String> getRolesName() {
+        List<String> rolesName = new ArrayList<>();
+        for (Role i : roles) {
+            rolesName.add(i.getName().replaceAll("ROLE_", "\n"));
+        }
+        return rolesName;
+    }
+
+
+    public void addRoles(List<String> rolesName) {
+        if (roles == null) {
+            roles = new HashSet<>();
+        }
+        for (String name : rolesName) {
+            if (name.contains("ROLE_ADMIN")) {
+                roles.add(new Role(1, "ROLE_ADMIN"));
+            } else {
+                roles.add(new Role(2, "ROLE_USER"));
+            }
+        }
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
     }
 
     public void setRoles(Role role) {

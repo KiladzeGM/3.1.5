@@ -7,7 +7,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.boot_security.demo.repository.UserRepository;
-import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
 
 import java.util.List;
@@ -21,6 +20,7 @@ public class UserService implements UserDetailsService {
         this.userRepository = userRepository;
     }
 
+    @Transactional(readOnly = true)
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByUsername(username);
@@ -42,14 +42,9 @@ public class UserService implements UserDetailsService {
         return userRepository.getById(id);
     }
 
-    @Transactional(readOnly = true)
-    public User findUserByUsername(String username) {
-        return userRepository.findByUsername(username);
-    }
-
     @Transactional
-    public boolean userSave(User newUser) {
-        newUser.setRoles(new Role(2, "ROLE_USER"));
+    public boolean userSave(User newUser, List<String> rolesName) {
+        newUser.addRoles(rolesName);
         userRepository.save(newUser);
         return true;
     }
