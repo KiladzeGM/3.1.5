@@ -1,6 +1,7 @@
 package ru.kata.spring.boot_security.demo.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -30,12 +31,12 @@ public class User implements UserDetails {
 
     @Column(name = "password")
     private String password;
-
+    @JsonIgnore
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Set<Role> roles = new HashSet<>();
+    private List<Role> roles;
 
     public User() {
     }
@@ -129,7 +130,8 @@ public class User implements UserDetails {
 
     public void addRoles(List<String> rolesName) {
         if (roles == null) {
-            roles = new HashSet<>();
+            roles = new ArrayList<>();
+//            roles = new HashSet<>();
         }
         for (String name : rolesName) {
             if (name.contains("ROLE_ADMIN")) {
@@ -156,10 +158,16 @@ public class User implements UserDetails {
         this.age = age;
     }
 
-    public void setRoles(Role role) {
-        if (this.roles == null) {
-            this.roles = new HashSet<>();
-        }
-        this.roles.add(role);
+    public void setRoles(List<Role> roles) {
+        this.roles = roles;
     }
+
+//    public void setRoles(Role role) {
+//        System.out.println("setRoles!!!!!!!!!!!!!!!!!!!!!!!!!!");
+//        if (this.roles == null) {
+//            this.roles = new ArrayList<>();
+////            this.roles = new HashSet<>();
+//        }
+//        this.roles.add(role);
+//    }
 }

@@ -39,12 +39,11 @@ public class UserService implements UserDetailsService {
 
     @Transactional(readOnly = true)
     public User findUserById(int id) {
-        return userRepository.getById(id);
+        return userRepository.findById(id).get();
     }
 
     @Transactional
-    public boolean userSave(User newUser, List<String> rolesName) {
-        newUser.addRoles(rolesName);
+    public boolean userSave(User newUser) {
         userRepository.save(newUser);
         return true;
     }

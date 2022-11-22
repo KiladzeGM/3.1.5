@@ -24,18 +24,16 @@ public class AdminController {
 
 
     @GetMapping
-    public String show(Model model, Principal principal) {
+    public String show(Principal principal) {
         User user = (User) userService.loadUserByUsername(principal.getName());
-        model.addAttribute("userInf", userService.findUserById(user.getId()));
-        model.addAttribute("show", userService.allUsers());
         return "show";
     }
 
-    @PostMapping()
-    public String create(@ModelAttribute("user") User user, @RequestParam(defaultValue = "rolesName") List<String> rolesName) {
-        userService.userSave(user, rolesName);
-        return "redirect:/admin";
-    }
+//    @PostMapping()
+//    public String create(@ModelAttribute("user") User user, @RequestParam(defaultValue = "rolesName") List<String> rolesName) {
+//        userService.userSave(user, rolesName);
+//        return "redirect:/admin";
+//    }
 
     @DeleteMapping("/{id}")
     public String delete(@PathVariable int id) {

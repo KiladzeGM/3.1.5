@@ -6,40 +6,22 @@
     <title>Show</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <style>
-        p {
-            margin: 0;
-            padding: 0;
-        }
-
-        .username {
-            font-weight: bold;
-            margin-right: 5px;
-        }
-
-        .navbar {
-            padding: 0.5rem 0;
-        }
-    </style>
 
 </head>
 <body>
 
-<div>
-    <nav class="navbar navbar-dark bg-dark text-white">
-        <div class="container-fluid justify-content-between align-items-center">
-            <div class="d-flex align-items-center" th:each="user : ${userInf}">
-                <p class="username" th:text="${user.getUsername()}"></p>
-                <p>with roles: </p>
-                <div th:each="role: ${user.getRolesName()}"
-                     th:text="'&nbsp;' + ${role}">
-                </div>
+<header>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-12 p-2 bg-dark text-white ">
+                <a class="font-weight-bold text-white" id="headerUsername"></a>
+                <a> with roles:</a>
+                <a id="headerRoles"></a>
+                <a th:href="@{/logout}" class="float-right text-secondary">Logout</a>
             </div>
-            <a href="/login" class="font-weight-bold text-secondary">Logout</a>
         </div>
-    </nav>
-</div>
-
+    </div>
+</header>
 
 <div class="container-fluid">
     <div class="row vh-100">
@@ -82,17 +64,11 @@
                                         <th scope="col">Email</th>
                                         <th scope="col">Role</th>
                                     </tr>
+
                                     </thead>
-                                    <tbody>
-                                    <tr th:each="user : ${userInf}">
-                                        <td th:text="${user.getId()}"></td>
-                                        <td th:text="${user.getFirstName()}"></td>
-                                        <td th:text="${user.getLastName()}"></td>
-                                        <td th:text="${user.getAge()}"></td>
-                                        <td th:text="${user.getUsername()}"></td>
-                                        <td th:text="${user.getRoles()}"></td>
-                                    </tr>
+                                    <tbody id="userPanelBody">
                                     </tbody>
+
                                 </table>
                                 <br>
                             </div>
@@ -117,6 +93,6 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
-
+<script type="text/javascript" src="UserPage.js"> </script>
 </body>
 </html>
