@@ -1,12 +1,13 @@
 $(async function () {
-    await newUser();
+    editUser();
 });
 
-async function newUser() {
+function editUser() {
 
-    const selected_options = document.querySelector('#rolesName').selectedOptions;
 
-    const form = document.forms["formNewUser"];
+    const selected_options = document.querySelector('#rolesEditUser').selectedOptions;
+
+    const form = document.forms["formEditUser"];
 
     form.addEventListener('submit', addNewUser)
 
@@ -16,13 +17,14 @@ async function newUser() {
         for (let i = 0; i < selected_options.length; i++) {
             listRol.push(selected_options[i].value);
         }
-
+        console.log(listRol);
         fetch("http://localhost:8080/admin/rest", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
+                id: form.id.value,
                 firstName: form.firstName.value,
                 lastName: form.lastName.value,
                 age: form.age.value,
@@ -31,10 +33,9 @@ async function newUser() {
                 singleRole: listRol
             })
         }).then(() => {
-            form.reset();
+            $('#editFormCloseButton').click();
             theseUsers();
-            $('#usersTable').click();
         })
-    }
 
+    }
 }

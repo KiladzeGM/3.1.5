@@ -38,6 +38,9 @@ public class User implements UserDetails {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private List<Role> roles;
 
+    @Transient
+    private List<String> singleRole;
+
     public User() {
     }
 
@@ -47,6 +50,15 @@ public class User implements UserDetails {
         this.lastName = lastName;
         this.age = age;
         this.username = username;
+    }
+
+    public List<String> getSingleRole() {
+        return singleRole;
+    }
+
+    public void setSingleRole(List<String> singleRole) {
+        this.singleRole = singleRole;
+        addRoles(singleRole);
     }
 
     @Override
@@ -131,12 +143,12 @@ public class User implements UserDetails {
     public void addRoles(List<String> rolesName) {
         if (roles == null) {
             roles = new ArrayList<>();
-//            roles = new HashSet<>();
         }
         for (String name : rolesName) {
             if (name.contains("ROLE_ADMIN")) {
                 roles.add(new Role(1, "ROLE_ADMIN"));
-            } else {
+            }
+            if (name.contains("ROLE_USER")) {
                 roles.add(new Role(2, "ROLE_USER"));
             }
         }
@@ -162,12 +174,4 @@ public class User implements UserDetails {
         this.roles = roles;
     }
 
-//    public void setRoles(Role role) {
-//        System.out.println("setRoles!!!!!!!!!!!!!!!!!!!!!!!!!!");
-//        if (this.roles == null) {
-//            this.roles = new ArrayList<>();
-////            this.roles = new HashSet<>();
-//        }
-//        this.roles.add(role);
-//    }
 }

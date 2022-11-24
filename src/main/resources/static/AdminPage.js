@@ -2,6 +2,7 @@ $(async function () {
     await theseUsers();
 });
 const table = $('#adminPanelBody');
+
 async function theseUsers() {
     table.empty()
     fetch("http://localhost:8080/admin/rest")
@@ -21,18 +22,12 @@ async function theseUsers() {
                             <td>${data.username}</td>
                             <td>${roleList}</td>
                             <td>
-                                <button type="submit" class="btn btn-info"
-                                        data-toggle="modal"
-                                        th:attr="data-target='#exampleModal-'+${data.id}">
-                                    Edit
-                                </button>
+                                <button type="button" class="btn btn-info" data-toggle="modal" id="buttonDelete"
+                                data-action="delete" data-id="${data.id}" data-target="#edit">Edit</button>
                             </td>
                             <td>
-                                <button type="submit" class="btn btn-danger"
-                                        data-toggle="modal"
-                                        th:attr="data-target='#exampleModalD-'+${data.id}">
-                                    Delete
-                                </button>
+                                <button type="button" class="btn btn-danger" data-toggle="modal" id="buttonDelete"
+                                data-action="delete" data-id="${data.id}" data-target="#delete">Delete</button>
                             </td>
                         </tr>)`;
                     $('#adminPanelBody').append(users);
