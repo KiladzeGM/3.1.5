@@ -1,69 +1,18 @@
 package ru.kata.spring.boot_security.demo.service;
 
-
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import ru.kata.spring.boot_security.demo.repository.UserRepository;
 import ru.kata.spring.boot_security.demo.model.User;
 
 import java.util.List;
 
-@Service
-public class UserService implements UserDetailsService {
-    private final UserRepository userRepository;
+public interface UserService extends UserDetailsService {
 
+    List<User> allUsers();
 
-    public UserService(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+    User findUserById(int id);
 
-    @Transactional(readOnly = true)
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByUsername(username);
+    boolean userSave(User newUser);
 
-        if (user == null) {
-            throw new UsernameNotFoundException("User not found");
-        }
-
-        return user;
-    }
-
-    @Transactional(readOnly = true)
-    public List<User> allUsers() {
-        return userRepository.findAll();
-    }
-
-    @Transactional(readOnly = true)
-    public User findUserById(int id) {
-        return userRepository.findById(id).get();
-    }
-
-    @Transactional
-    public boolean userSave(User newUser) {
-        userRepository.save(newUser);
-        return true;
-    }
-
-    @Transactional
-    public boolean userUpdate(User user) {
-        userRepository.save(user);
-        return true;
-    }
-
-    @Transactional
-    public boolean deleteUserById(int id) {
-        User user = userRepository.getById(id);
-
-        if (user == null) {
-            return false;
-        }
-
-        userRepository.delete(user);
-        return true;
-    }
+    boolean deleteUserById(int id);
 
 }
